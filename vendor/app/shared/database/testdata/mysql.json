@@ -1,0 +1,8 @@
+{
+  "adapter": "mysql",
+  "database": "mugil",
+  "username": "alice",
+  "password": "hatter",
+  "host": "localhost",
+  "port": 3306
+}

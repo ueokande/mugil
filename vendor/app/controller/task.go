@@ -28,6 +28,8 @@ type TaskDto struct {
 	Time        HumanReadableTime
 	Priority    string
 	Description string
+	Done        bool
+	Canceled    bool
 }
 
 func TaskIndex(c echo.Context) error {
@@ -42,6 +44,8 @@ func TaskIndex(c echo.Context) error {
 			Time:        HumanReadableTime(t.Time),
 			Priority:    t.Priority,
 			Description: t.Description,
+			Done:        t.Done,
+			Canceled:    t.Canceled,
 		})
 	}
 	return c.Render(http.StatusOK, "task_index.html", dtos)

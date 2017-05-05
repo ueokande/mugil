@@ -11,11 +11,12 @@ type Task struct {
 	Date        time.Time
 	Time        time.Duration
 	Description string
+	Done        bool
 	Canceled    bool
 }
 
 func TasksByUserID(id int32) ([]*Task, error) {
-	const query = "SELECT id, priority, time, description, canceled FROM task WHERE user_id = ?"
+	const query = "SELECT id, priority, time, description, done, canceled FROM task WHERE user_id = ?"
 
 	rows, err := database.SQL.Query(query, id)
 	if err != nil {
@@ -26,7 +27,7 @@ func TasksByUserID(id int32) ([]*Task, error) {
 	tasks := make([]*Task, 0)
 	for rows.Next() {
 		var t Task
-		err := rows.Scan(&t.Id, &t.Priority, &t.Time, &t.Description, &t.Canceled)
+		err := rows.Scan(&t.Id, &t.Priority, &t.Time, &t.Description, &t.Done, &t.Canceled)
 		if err != nil {
 			return nil, err
 		}

@@ -1,0 +1,20 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Top</title>
+</head>
+
+<body>
+  <h1>Task list</h1>
+  <table>
+  {{range .}}
+    <tr>
+      <td>{{.Name}}</td>
+      <td>{{.Time}}</td>
+    </tr>
+  {{end}}
+  </table>
+</body>
+</html>

@@ -36,5 +36,6 @@ func main() {
 	}
 
 	e.GET("/", controller.TaskIndex)
+	e.POST("/tasks", controller.TaskCreate)
 	e.Logger.Fatal(e.Start(":1323"))
 }

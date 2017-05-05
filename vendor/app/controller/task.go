@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo"
+	"github.com/labstack/gommon/log"
 )
 
 type HumanReadableTime time.Duration
@@ -35,6 +36,7 @@ type TaskDto struct {
 func TaskIndex(c echo.Context) error {
 	tasks, err := model.TasksByUserID(0)
 	if err != nil {
+		log.Error(err)
 		return err
 	}
 
@@ -48,5 +50,33 @@ func TaskIndex(c echo.Context) error {
 			Canceled:    t.Canceled,
 		})
 	}
-	return c.Render(http.StatusOK, "task_index.html", dtos)
+	err = c.Render(http.StatusOK, "task_index.html", dtos)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+	return nil
+}
+
+type TaskCreateForm struct {
+	Time        time.Duration `form:"time",json:"time"`
+	Priority    string        `form:"priority",json:"priority"`
+	Description string        `form:"description",json:"description"`
+}
+
+func TaskCreate(c echo.Context) error {
+	var form TaskCreateForm
+	err := c.Bind(&form)
+	log.Info(form)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+
+	task, err := model.TaskCreate(form.Priority, time.Now(), form.Time, form.Description, false, false)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+	return c.JSON(http.StatusOK, task)
 }

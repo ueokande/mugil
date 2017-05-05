@@ -19,5 +19,28 @@
     </tr>
   {{end}}
   </table>
+
+  <form action="/tasks" method="POST">
+    <label for="time">Time</label>
+    <select name="time">
+      <option value="1800000000000">30min</option>
+      <option value="3600000000000">1h</option>
+      <option value="5400000000000">1h30min</option>
+      <option value="7200000000000">2h</option>
+    </select>
+
+    <label for="priority">Priority</label>
+    <select name="priority">
+      <option value="S">S</option>
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+    </select>
+
+    <label for="description">Description</label>
+    <input type="input" name="description" id="description">
+
+    <input type="submit" value="Submit">
+  </form>
 </body>
 </html>

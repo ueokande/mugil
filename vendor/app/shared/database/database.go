@@ -11,6 +11,7 @@ import (
 )
 
 var UnknownAdapter = errors.New("unknown adapter")
+var SQL *sql.DB
 
 type Database interface {
 	DSN() string
@@ -25,7 +26,7 @@ type MySQL struct {
 }
 
 func (info MySQL) DSN() string {
-	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
 		info.Username, info.Password,
 		info.Host, info.Port,
 		info.Name)
@@ -55,15 +56,18 @@ func LoadConfig(path string) (Database, error) {
 	return nil, UnknownAdapter
 }
 
-func Connect(ci Database) error {
-	db, err := sql.Open("mysql", "user:password@tcp(host:port)/dbname")
+func Connect(db Database) error {
+	var err error
+
+	SQL, err = sql.Open("mysql", db.DSN())
 	if err != nil {
 		return err
 	}
 
-	err = db.Ping()
+	err = SQL.Ping()
 	if err != nil {
 		return err
 	}
+
 	return nil
 }

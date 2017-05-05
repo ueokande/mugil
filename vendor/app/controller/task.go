@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"app/model"
 	"fmt"
 	"net/http"
 	"time"
@@ -23,22 +24,25 @@ func (t HumanReadableTime) String() string {
 	}
 }
 
-type Task struct {
-	Name string
-	Time HumanReadableTime
+type TaskDto struct {
+	Time        HumanReadableTime
+	Priority    string
+	Description string
 }
 
 func TaskIndex(c echo.Context) error {
-	tasks := []Task{
-		{
-			Name: "wash my head",
-			Time: HumanReadableTime(15 * time.Minute),
-		},
-		{
-			Name: "wash my hands",
-			Time: HumanReadableTime(60 * time.Minute),
-		},
+	tasks, err := model.TasksByUserID(0)
+	if err != nil {
+		return err
 	}
 
-	return c.Render(http.StatusOK, "task_index.html", tasks)
+	dtos := make([]TaskDto, 0, len(tasks))
+	for _, t := range tasks {
+		dtos = append(dtos, TaskDto{
+			Time:        HumanReadableTime(t.Time),
+			Priority:    t.Priority,
+			Description: t.Description,
+		})
+	}
+	return c.Render(http.StatusOK, "task_index.html", dtos)
 }

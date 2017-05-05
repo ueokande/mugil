@@ -36,29 +36,14 @@ func TasksByUserID(id int64) ([]*Task, error) {
 	return tasks, nil
 }
 
-func TaskCreate(priority string, date time.Time, time time.Duration, description string, done bool, canceled bool) (*Task, error) {
+func TaskCreate(priority string, date time.Time, time time.Duration, description string) (int64, error) {
 	result, err := database.SQL.Exec(
-		"INSERT INTO task (priority, date, time, description, done, canceled) VALUES (?, ?, ?, ?, ?, ?)",
-		priority, date, time, description, done, canceled)
+		"INSERT INTO task (priority, date, time, description) VALUES (?, ?, ?, ?)",
+		priority, date, time, description)
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
-
-	id, err := result.LastInsertId()
-	if err != nil {
-		return nil, err
-	}
-
-	task := Task{
-		Id:          id,
-		Priority:    priority,
-		Date:        date,
-		Time:        time,
-		Description: description,
-		Done:        done,
-		Canceled:    canceled,
-	}
-	return &task, nil
+	return result.LastInsertId()
 }
 
 func TaskUpdateDone(id int64, done bool) error {

@@ -64,6 +64,10 @@ type TaskCreateForm struct {
 	Description string        `form:"description",json:"description"`
 }
 
+type IdResponse struct {
+	Id int64 `json:"id"`
+}
+
 func TaskCreate(c echo.Context) error {
 	var form TaskCreateForm
 	err := c.Bind(&form)
@@ -73,10 +77,10 @@ func TaskCreate(c echo.Context) error {
 		return err
 	}
 
-	task, err := model.TaskCreate(form.Priority, time.Now(), form.Time, form.Description, false, false)
+	id, err := model.TaskCreate(form.Priority, time.Now(), form.Time, form.Description)
 	if err != nil {
 		log.Error(err)
 		return err
 	}
-	return c.JSON(http.StatusOK, task)
+	return c.JSON(http.StatusOK, IdResponse{Id: id})
 }

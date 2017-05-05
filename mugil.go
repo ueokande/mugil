@@ -35,6 +35,9 @@ func main() {
 		Template: template.Must(template.ParseGlob("template/*.html")),
 	}
 
+	e.GET("/login", controller.LoginGet)
+	e.POST("/login", controller.LoginPost)
+
 	e.GET("/", controller.TaskIndex)
 	e.POST("/tasks", controller.TaskCreate)
 	e.Logger.Fatal(e.Start(":1323"))

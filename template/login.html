@@ -8,6 +8,8 @@
 
 <body>
   <form action="/login" method="POST">
+    <input type="hidden" name="CSRF_TOKEN" id="csrf_token" >
+
     <label for="email">Email</label>
     <input type="input" name="email" id="email" placeholder="Email">
 
@@ -16,5 +18,21 @@
 
     <input type="submit" value="Login">
   </form>
+
+  <script>
+  (function(){
+    function csrfToken() {
+      var fields = document.cookie.split(';');
+      for (var i = 0; i < fields.length; ++i) {
+        var kv = fields[i].split('=');
+	if (kv[0] === "_csrf") {
+	  return kv[1];
+	}
+      }
+      return null;
+    }
+    document.getElementById("csrf_token").value = csrfToken();
+  })();
+  </script>
 </body>
 </html>

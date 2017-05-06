@@ -21,6 +21,9 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
+	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
+		TokenLookup: "form:CSRF_TOKEN",
+	}))
 
 	db, err := database.LoadConfig("config/development.json")
 	if err != nil {

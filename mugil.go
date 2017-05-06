@@ -22,7 +22,7 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 
-	db, err := database.LoadConfig("database.json")
+	db, err := database.LoadConfig("config/development.json")
 	if err != nil {
 		e.Logger.Fatal(err)
 	}

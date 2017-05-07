@@ -38,6 +38,8 @@ func main() {
 		Template: template.Must(template.ParseGlob("template/*.html")),
 	}
 
+	e.Static("/assets", "assets")
+
 	e.GET("/login", controller.LoginGet)
 	e.POST("/login", controller.LoginPost)
 

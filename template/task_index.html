@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Top</title>
+  <title>Mugil</title>
 </head>
 
 <body>
@@ -21,6 +21,8 @@
   </table>
 
   <form action="/tasks" method="POST">
+    <input type="hidden" name="CSRF_TOKEN" id="csrf_token" >
+
     <label for="time">Time</label>
     <select name="time">
       <option value="1800000000000">30min</option>
@@ -42,5 +44,21 @@
 
     <input type="submit" value="Submit">
   </form>
+
+  <script>
+  (function(){
+    function csrfToken() {
+      var fields = document.cookie.split(';');
+      for (var i = 0; i < fields.length; ++i) {
+        var kv = fields[i].split('=');
+	if (kv[0] === "_csrf") {
+	  return kv[1];
+	}
+      }
+      return null;
+    }
+    document.getElementById("csrf_token").value = csrfToken();
+  })();
+  </script>
 </body>
 </html>

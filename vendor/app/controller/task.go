@@ -12,6 +12,24 @@ import (
 
 type HumanReadableTime time.Duration
 
+type TaskCreateForm struct {
+	Time        time.Duration `form:"time",json:"time"`
+	Priority    string        `form:"priority",json:"priority"`
+	Description string        `form:"description",json:"description"`
+}
+
+type IdResponse struct {
+	Id int64 `json:"id"`
+}
+
+type TaskDto struct {
+	Time        HumanReadableTime
+	Priority    string
+	Description string
+	Done        bool
+	Canceled    bool
+}
+
 func (t HumanReadableTime) String() string {
 	d := time.Duration(t)
 	hour := d / time.Hour
@@ -25,16 +43,13 @@ func (t HumanReadableTime) String() string {
 	}
 }
 
-type TaskDto struct {
-	Time        HumanReadableTime
-	Priority    string
-	Description string
-	Done        bool
-	Canceled    bool
-}
-
 func TaskIndex(c echo.Context) error {
-	tasks, err := model.TasksByUserID(0)
+	uid, err := CurrentUserId(c)
+	if err != nil {
+		return c.Redirect(http.StatusFound, "/login")
+	}
+
+	tasks, err := model.TasksByUserID(uid)
 	if err != nil {
 		log.Error(err)
 		return err
@@ -58,26 +73,21 @@ func TaskIndex(c echo.Context) error {
 	return nil
 }
 
-type TaskCreateForm struct {
-	Time        time.Duration `form:"time",json:"time"`
-	Priority    string        `form:"priority",json:"priority"`
-	Description string        `form:"description",json:"description"`
-}
-
-type IdResponse struct {
-	Id int64 `json:"id"`
-}
-
 func TaskCreate(c echo.Context) error {
+	uid, err := CurrentUserId(c)
+	if err != nil {
+		return c.Redirect(http.StatusFound, "/login")
+	}
+
 	var form TaskCreateForm
-	err := c.Bind(&form)
+	err = c.Bind(&form)
 	log.Info(form)
 	if err != nil {
 		log.Error(err)
 		return err
 	}
 
-	id, err := model.TaskCreate(form.Priority, time.Now(), form.Time, form.Description)
+	id, err := model.TaskCreate(uid, form.Priority, time.Now(), form.Time, form.Description)
 	if err != nil {
 		log.Error(err)
 		return err

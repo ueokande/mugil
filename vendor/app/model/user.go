@@ -11,17 +11,17 @@ import (
 var ErrAuthentication = errors.New("authentication failed")
 
 type User struct {
-	Id      uint64
+	Id      int64
 	Email   string
 	Deleted uint8
 }
 
-func UserAuthenticate(email string, password string) (uint64, error) {
+func UserAuthenticate(email string, password string) (int64, error) {
 	row := database.SQL.QueryRow(
 		"SELECT id, password FROM user WHERE email = ? LIMIT 1",
 		email)
 
-	var id uint64
+	var id int64
 	var hash string
 	err := row.Scan(&id, &hash)
 	if err == sql.ErrNoRows {

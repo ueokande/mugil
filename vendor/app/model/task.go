@@ -36,10 +36,10 @@ func TasksByUserID(id int64) ([]*Task, error) {
 	return tasks, nil
 }
 
-func TaskCreate(priority string, date time.Time, time time.Duration, description string) (int64, error) {
+func TaskCreate(uid int64, priority string, date time.Time, time time.Duration, description string) (int64, error) {
 	result, err := database.SQL.Exec(
-		"INSERT INTO task (priority, date, time, description) VALUES (?, ?, ?, ?)",
-		priority, date, time, description)
+		"INSERT INTO task (user_id, priority, date, time, description) VALUES (?, ?, ?, ?, ?)",
+		uid, priority, date, time, description)
 	if err != nil {
 		return 0, err
 	}

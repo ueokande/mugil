@@ -57,7 +57,7 @@ func (m *Manager) newSession(c echo.Context) (Session, error) {
 
 func (m *Manager) StartSession(c echo.Context) (Session, error) {
 	cookie, err := c.Cookie(m.CookieName)
-	if err == echo.ErrCookieNotFound || cookie.Value == "" {
+	if err == http.ErrNoCookie || err == echo.ErrCookieNotFound || cookie.Value == "" {
 		return m.newSession(c)
 	} else if err != nil {
 		return nil, err

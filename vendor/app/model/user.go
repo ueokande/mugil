@@ -3,9 +3,12 @@ package model
 import (
 	"app/shared/database"
 	"database/sql"
+	"errors"
 
 	"golang.org/x/crypto/bcrypt"
 )
+
+var ErrAuthentication = errors.New("authentication failed")
 
 type User struct {
 	Id      uint64
@@ -13,26 +16,27 @@ type User struct {
 	Deleted uint8
 }
 
-func UserAuthenticate(email string, password string) (bool, error) {
+func UserAuthenticate(email string, password string) (uint64, error) {
 	row := database.SQL.QueryRow(
-		"SELECT password FROM user WHERE email = ? LIMIT 1",
+		"SELECT id, password FROM user WHERE email = ? LIMIT 1",
 		email)
 
+	var id uint64
 	var hash string
-	err := row.Scan(&hash)
+	err := row.Scan(&id, &hash)
 	if err == sql.ErrNoRows {
-		return false, nil
+		return 0, ErrAuthentication
 	} else if err != nil {
-		return false, err
+		return 0, err
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	if err == nil {
-		return true, nil
+		return id, nil
 	} else if err == bcrypt.ErrMismatchedHashAndPassword {
-		return false, nil
+		return 0, ErrAuthentication
 	}
-	return false, err
+	return 0, err
 }
 
 func UserCreate(email string, password string) (int64, error) {

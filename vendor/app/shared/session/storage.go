@@ -39,6 +39,7 @@ func (p *MemorySessionStorage) SessionInit(sid string) (Session, error) {
 		sid:          sid,
 		lastAccessed: time.Now(),
 		values:       make(map[interface{}]interface{}, 0),
+		mutex:        new(sync.Mutex),
 	}
 	p.sessions[sid] = sess
 	return sess, nil

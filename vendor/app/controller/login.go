@@ -2,6 +2,7 @@ package controller
 
 import (
 	"app/model"
+	"app/shared/session"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -9,6 +10,14 @@ import (
 )
 
 func LoginGet(c echo.Context) error {
+	err := LoggedIn(c)
+	if err == nil {
+		return c.Redirect(http.StatusFound, "/")
+	} else if err != session.ErrNoSuchValue {
+		log.Error(err)
+		return err
+	}
+
 	return c.Render(http.StatusOK, "login.html", nil)
 }
 
@@ -24,13 +33,20 @@ func LoginPost(c echo.Context) error {
 		log.Error(err)
 		return err
 	}
-	ok, err := model.UserAuthenticate(form.Email, form.Password)
+	id, err := model.UserAuthenticate(form.Email, form.Password)
+	if err == model.ErrAuthentication {
+		return c.Redirect(http.StatusFound, "/login")
+	} else if err != nil {
+		log.Error(err)
+		return err
+	}
+
+	sess, err := session.DefaultSessionManager().StartSession(c)
 	if err != nil {
 		log.Error(err)
 		return err
 	}
-	if !ok {
-		c.Redirect(http.StatusFound, "/login")
-	}
-	return c.String(http.StatusOK, "OK")
+	sess.Set("current_user_id", id)
+
+	return c.Redirect(http.StatusFound, "/")
 }

@@ -38,11 +38,8 @@ func TestUserAuthenticate(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		ok, err := UserAuthenticate(c.email, c.password)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if ok != c.expected {
+		_, err := UserAuthenticate(c.email, c.password)
+		if c.expected && err != nil {
 			t.Errorf("Unexpected authentication (email=%v, password=%v)", c.email, c.password)
 		}
 	}

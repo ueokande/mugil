@@ -1,0 +1,23 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="/assets/csrf.js"></script>
+  <title>Mugil</title>
+</head>
+
+<body>
+  <form action="/login" method="POST">
+    <input type="hidden" name="CSRF_TOKEN">
+
+    <label for="email">Email</label>
+    <input type="input" name="email" id="email" placeholder="Email">
+
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" placeholder="Password">
+
+    <input type="submit" value="Login">
+  </form>
+</body>
+</html>

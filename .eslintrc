@@ -13,7 +13,7 @@
       "jsx": true
     }
   },
-  "extends": ["eslint:all", "plugin:react/all"],
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
   "rules": {
     "arrow-body-style": "off",
     "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
@@ -21,12 +21,19 @@
     "indent": ["error", 2],
     "newline-after-var": "off",
     "newline-before-return": "off",
+    "multiline-ternary": "off",
+    "max-statements": ["error", 15],
+    "no-console": ["error", { allow: ["warn", "error"] }],
+    "no-magic-numbers": ["error", { "ignore": [0, 1, 2] }],
+    "no-param-reassign": "off",
+    "no-ternary": "off",
     "object-curly-spacing": [
       "error",
       "always", { "arraysInObjects": false, "objectsInObjects": false }
     ],
     "object-curly-newline": "off",
     "object-property-newline": "off",
+    "object-shorthand": "off",
     "padded-blocks": "off",
     "prefer-template": "off",
     "quote-props": ["error", "as-needed"],

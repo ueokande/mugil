@@ -5,7 +5,7 @@ const dist = path.resolve(__dirname, 'build');
 
 module.exports = {
   entry: {
-    bundle: path.join(src, 'index.js'),
+    index: path.join(src, 'index.js'),
   },
 
   output: {

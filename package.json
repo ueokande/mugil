@@ -1,4 +1,6 @@
 {
+  "main": "assets/js/index.js",
+
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",

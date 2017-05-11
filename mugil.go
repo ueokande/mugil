@@ -38,7 +38,7 @@ func main() {
 		Template: template.Must(template.ParseGlob("template/*.html")),
 	}
 
-	e.Static("/assets", "assets")
+	e.Static("/assets", "build")
 
 	e.GET("/login", controller.LoginGet)
 	e.POST("/login", controller.LoginPost)

@@ -1,3 +1,5 @@
+import React from 'react';
+
 function csrfToken() {
   var fields = document.cookie.split(';');
   for (var i = 0; i < fields.length; ++i) {
@@ -9,10 +11,8 @@ function csrfToken() {
   return null;
 }
 
-window.onload = function() {
-  var input = document.querySelector("[name=CSRF_TOKEN]");
-  if (input === null) {
-    return;
-  }
-  input.value = csrfToken();
-};
+const CsrfToken = () => (
+  <input type="hidden" name="CSRF_TOKEN" value={csrfToken()}/>
+)
+
+export default CsrfToken;

@@ -1,12 +1,10 @@
 {
   "main": "assets/js/index.js",
-
   "scripts": {
     "build": "webpack",
     "start": "webpack --watch",
     "lint": "eslint -c .eslintrc assets/**/*.{js,jsx}"
   },
-
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
@@ -17,8 +15,10 @@
     "babel-register": "^6.24.1",
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^7.0.0",
+    "material-ui": "^0.18.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-tap-event-plugin": "^2.0.1",
     "webpack": "^2.5.1"
   }
 }

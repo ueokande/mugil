@@ -3,6 +3,7 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack --watch",
+    "test": "karma start",
     "lint": "eslint -c .eslintrc assets/**/*.{js,jsx}"
   },
   "devDependencies": {

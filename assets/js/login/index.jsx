@@ -11,7 +11,13 @@ window.addEventListener('load', () => {
   if (login !== null) {
     ReactDOM.render(
       <MuiThemeProvider>
-        <LoginForm />
+        <div>
+          <hgroup>
+            <h1>Mugil tasks</h1>
+            <h3>Accelerate your task processing</h3>
+          </hgroup>
+          <LoginForm />
+        </div>
       </MuiThemeProvider>,
       login
     );

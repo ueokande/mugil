@@ -1,3 +1,21 @@
-.login-form {
-  padding: 32px;
+#mugil-login {
+  .login-form {
+    padding: 32px;
+  }
+
+  hgroup {
+    text-align: center;
+    margin-top: 4em;
+  }
+
+  h1 {
+    font-weight: 300;
+    color: #636363;
+  }
+
+  h3 {
+    font-weight: 300;
+    color: #4a89dc;
+  }
+
 }

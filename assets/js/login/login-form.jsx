@@ -12,6 +12,7 @@ const LoginForm = () => (
       hintText="Email"
       floatingLabelText="Email"
       name="email"
+      fullWidth={true}
     /><br />
 
     <TextField
@@ -19,6 +20,7 @@ const LoginForm = () => (
       floatingLabelText="Password"
       type="password"
       name="password"
+      fullWidth={true}
     /><br />
 
     <RaisedButton

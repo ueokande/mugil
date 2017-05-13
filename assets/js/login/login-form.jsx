@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import CsrfToken from '../shared/csrf-token';
 
 const LoginForm = () => (
-  <form action="/login" method="POST">
+  <form className='login-form' action="/login" method="POST">
 
     <CsrfToken />
 

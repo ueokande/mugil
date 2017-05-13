@@ -1,6 +1,6 @@
 var path = require('path');
 
-const src = path.resolve(__dirname, 'assets/js');
+const src = path.resolve(__dirname, 'assets');
 const dist = path.resolve(__dirname, 'build');
 
 module.exports = {

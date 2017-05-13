@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import EntryList from './entry-list';
+import AppBar from 'material-ui/AppBar';
 
 export default class TaskIndex extends Component {
   constructor() {
@@ -63,7 +64,13 @@ window.addEventListener('load', () => {
   if (parent !== null) {
     ReactDOM.render(
       <MuiThemeProvider>
-        <TaskIndex></TaskIndex>
+        <div>
+          <AppBar
+            title="Mugil tasks"
+            iconClassNameRight="muidocs-icon-navigation-expand-more"
+          />
+          <TaskIndex></TaskIndex>
+        </div>
       </MuiThemeProvider>,
       parent 
     );

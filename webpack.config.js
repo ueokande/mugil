@@ -17,7 +17,10 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx$/,
-        exclude: /node_modules/,
+        exclude: [
+          /node_modules/,
+          /_test.jsx$/
+        ],
         loader: 'babel-loader',
         query: {
           presets: ['es2015', 'react']
@@ -25,7 +28,10 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: [
+          /node_modules/,
+          /_test.js$/
+        ],
         loader: 'babel-loader',
         query: {
           presets: ['es2015']

@@ -3,6 +3,7 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack --watch",
+    "test": "karma start",
     "lint": "eslint -c .eslintrc assets/**/*.{js,jsx}"
   },
   "devDependencies": {
@@ -13,10 +14,18 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.24.1",
+    "chai": "^3.5.0",
     "css-loader": "^0.28.1",
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^7.0.0",
+    "karma": "^1.7.0",
+    "karma-chrome-launcher": "^2.1.1",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.3",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.3",
     "material-ui": "^0.18.0",
+    "mocha": "^3.3.0",
     "node-sass": "^4.5.2",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",

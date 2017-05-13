@@ -1,1 +1,1 @@
-require('./shared/csrf');
+require('./login/index');

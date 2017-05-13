@@ -24,6 +24,7 @@ type IdResponse struct {
 }
 
 type TaskDto struct {
+	Id          int64         `json:"id"`
 	Time        time.Duration `json:"time"`
 	Priority    string        `json:"priority"`
 	Description string        `json:"description"`
@@ -71,6 +72,7 @@ func TaskIndexJson(c echo.Context) error {
 	dtos := make([]TaskDto, 0, len(tasks))
 	for _, t := range tasks {
 		dtos = append(dtos, TaskDto{
+			Id:          t.Id,
 			Time:        t.Time,
 			Priority:    t.Priority,
 			Description: t.Description,

@@ -17,7 +17,7 @@ export default class TaskIndex extends Component {
       method: 'GET',
       credentials: 'same-origin',
       headers: {
-	'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
       }
     })
     .then((response) => {
@@ -35,7 +35,7 @@ export default class TaskIndex extends Component {
     })
     .then((entries) => {
       this.setState({
-	      entries: entries
+        entries: entries
       })
     });
   }
@@ -63,7 +63,7 @@ window.addEventListener('load', () => {
           <TaskIndex></TaskIndex>
         </div>
       </MuiThemeProvider>,
-      parent 
+      parent
     );
   }
 });

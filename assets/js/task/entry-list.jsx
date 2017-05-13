@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Table,
   TableBody,
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import PropTypes from 'prop-types';
 
 function humanReadableDuration(nanoseconds) {
   let minutes = nanoseconds / 60 / 1e9;
@@ -38,5 +39,5 @@ EntryList.defaultProps = {
 };
 
 EntryList.propTypes = {
-  entries: React.PropTypes.arrayOf(React.PropTypes.object)
+  entries: PropTypes.arrayOf(PropTypes.object)
 };

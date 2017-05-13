@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import CsrfToken from '../shared/csrf-token';
+import CsrfToken from '../ui/csrf-token';
 
 const LoginForm = () => (
   <form className='login-form' action="/login" method="POST">

@@ -2,7 +2,6 @@ package controller
 
 import (
 	"app/model"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -10,7 +9,9 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-type HumanReadableTime time.Duration
+type TaskIndexJsonForm struct {
+	Date string `query:"date"`
+}
 
 type TaskCreateForm struct {
 	Time        time.Duration `form:"time",json:"time"`
@@ -23,52 +24,64 @@ type IdResponse struct {
 }
 
 type TaskDto struct {
-	Time        HumanReadableTime
-	Priority    string
-	Description string
-	Done        bool
-	Canceled    bool
+	Time        time.Duration `json:"time"`
+	Priority    string        `json:"priority"`
+	Description string        `json:"description"`
+	Done        bool          `json:"done"`
+	Canceled    bool          `json:"canceled"`
 }
 
-func (t HumanReadableTime) String() string {
-	d := time.Duration(t)
-	hour := d / time.Hour
-	min := (d - hour*time.Hour) / time.Minute
-	if hour == 0 {
-		return fmt.Sprintf("%dmin", min)
-	} else if min == 0 {
-		return fmt.Sprintf("%dh", hour)
-	} else {
-		return fmt.Sprintf("%dh %dmin", hour, min)
-	}
+type MessageJsonDto struct {
+	Message string `json:"message"`
 }
 
 func TaskIndex(c echo.Context) error {
-	uid, err := CurrentUserId(c)
+	_, err := CurrentUserId(c)
 	if err != nil {
 		return c.Redirect(http.StatusFound, "/login")
 	}
-
-	tasks, err := model.TasksByUserID(uid)
+	err = c.Render(http.StatusOK, "task_index.html", nil)
 	if err != nil {
 		log.Error(err)
 		return err
+	}
+	return nil
+}
+
+func TaskIndexJson(c echo.Context) error {
+	uid, err := CurrentUserId(c)
+	if err != nil {
+		return c.JSON(http.StatusForbidden, MessageJsonDto{"not authenticated"})
+	}
+
+	var form TaskIndexJsonForm
+	err = c.Bind(&form)
+	date, err := time.Parse("2006-01-02", form.Date)
+	if err != nil {
+		log.Error(err)
+		return c.JSON(http.StatusForbidden, MessageJsonDto{"invalid date"})
+	}
+
+	tasks, err := model.TasksByUserIdAndDate(uid, date)
+	if err != nil {
+		log.Error(err)
+		return c.JSON(http.StatusForbidden, MessageJsonDto{"invalid request"})
 	}
 
 	dtos := make([]TaskDto, 0, len(tasks))
 	for _, t := range tasks {
 		dtos = append(dtos, TaskDto{
-			Time:        HumanReadableTime(t.Time),
+			Time:        t.Time,
 			Priority:    t.Priority,
 			Description: t.Description,
 			Done:        t.Done,
 			Canceled:    t.Canceled,
 		})
 	}
-	err = c.Render(http.StatusOK, "task_index.html", dtos)
+	err = c.JSON(http.StatusOK, dtos)
 	if err != nil {
 		log.Error(err)
-		return err
+		return c.JSON(http.StatusInternalServerError, MessageJsonDto{"marshal error"})
 	}
 	return nil
 }
@@ -81,7 +94,6 @@ func TaskCreate(c echo.Context) error {
 
 	var form TaskCreateForm
 	err = c.Bind(&form)
-	log.Info(form)
 	if err != nil {
 		log.Error(err)
 		return err

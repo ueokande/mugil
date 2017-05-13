@@ -15,27 +15,6 @@ type Task struct {
 	Canceled    bool
 }
 
-func TasksByUserID(id int64) ([]*Task, error) {
-	rows, err := database.SQL.Query(
-		"SELECT id, priority, time, description, done, canceled FROM task WHERE user_id = ?",
-		id)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	tasks := make([]*Task, 0)
-	for rows.Next() {
-		var t Task
-		err := rows.Scan(&t.Id, &t.Priority, &t.Time, &t.Description, &t.Done, &t.Canceled)
-		if err != nil {
-			return nil, err
-		}
-		tasks = append(tasks, &t)
-	}
-	return tasks, nil
-}
-
 func TasksByUserIdAndDate(id int64, date time.Time) ([]*Task, error) {
 	rows, err := database.SQL.Query(
 		"SELECT id, priority, time, description, done, canceled FROM task WHERE user_id = ? and date = ?",

@@ -13,39 +13,30 @@ export default class TaskIndex extends Component {
   }
 
   componentDidMount() {
-    // TODO fetch task list from server
-    this.setState({
-      entries: [{
-        id: 1,
-        completed: false,
-        priority: "A",
-        time: 1.8e+12,
-        description: "wash my hands",
-      }, {
-        id: 2,
-        completed: false,
-        priority: "B",
-        time: 3.6e+12,
-        description: "watch TV",
-      }, {
-        id: 3,
-        completed: true,
-        priority: "S",
-        time: 3.6e+12,
-        description: "Buy drugs",
-      }, {
-        id: 4,
-        completed: false,
-        priority: "A",
-        time: 3.6e+12,
-        description: "Clean my room",
-      }, {
-        id: 5,
-        completed: false,
-        priority: "B",
-        time: 3.6e+12,
-        description: "wakl with my dog",
-      }]
+    fetch('/tasks.json?date=2017-05-09', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: {
+	'Content-Type': 'application/json'
+      }
+    })
+    .then((response) => {
+      if (response.status >= 200 && response.status < 300) {
+        return response
+      } else {
+        var error = new Error(response.statusText)
+        error.response = response
+        throw error
+      }
+
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((entries) => {
+      this.setState({
+	      entries: entries
+      })
     });
   }
 

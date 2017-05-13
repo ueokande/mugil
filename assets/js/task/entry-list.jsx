@@ -20,7 +20,7 @@ export default class EntryList extends Component {
           {
             this.props.entries.map((entry) => {
               return (
-                <TableRow key={entry.id} selected={entry.completed}>
+                <TableRow key={entry.id} selected={entry.done}>
                   <TableRowColumn>{entry.priority}</TableRowColumn>
                   <TableRowColumn>{humanReadableDuration(entry.time)}</TableRowColumn>
                   <TableRowColumn>{entry.description}</TableRowColumn>

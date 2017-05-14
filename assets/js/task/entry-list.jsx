@@ -22,7 +22,7 @@ export default class EntryList extends Component {
               return (
                 <TableRow key={entry.id} selected={entry.done}>
                   <TableRowColumn>{entry.priority}</TableRowColumn>
-                  <TableRowColumn>{humanReadableDuration(entry.time)}</TableRowColumn>
+                  <TableRowColumn>{humanReadableDuration(entry.estimated_time)}</TableRowColumn>
                   <TableRowColumn>{entry.description}</TableRowColumn>
                 </TableRow>
               );

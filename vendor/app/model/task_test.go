@@ -21,7 +21,7 @@ func insertTasks() error {
 	}
 	for _, d := range data {
 		_, err := database.SQL.Exec(
-			"INSERT INTO task (user_id, priority, date, time, description) VALUES (?, ?, ?, ?, ?)",
+			"INSERT INTO task (user_id, priority, date, estimated_time, description) VALUES (?, ?, ?, ?, ?)",
 			d[0], d[1], d[2], d[3], d[4],
 		)
 		if err != nil {

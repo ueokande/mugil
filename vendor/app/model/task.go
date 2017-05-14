@@ -6,18 +6,18 @@ import (
 )
 
 type Task struct {
-	Id          int64
-	Priority    string
-	Date        time.Time
-	Time        time.Duration
-	Description string
-	Done        bool
-	Canceled    bool
+	Id            int64
+	Priority      string
+	Date          time.Time
+	EstimatedTime time.Duration
+	Description   string
+	Done          bool
+	Canceled      bool
 }
 
 func TasksByUserIdAndDate(id int64, date time.Time) ([]*Task, error) {
 	rows, err := database.SQL.Query(
-		"SELECT id, priority, time, description, done, canceled FROM task WHERE user_id = ? and date = ?",
+		"SELECT id, priority, estimated_time, description, done, canceled FROM task WHERE user_id = ? and date = ?",
 		id, date)
 	if err != nil {
 		return nil, err
@@ -27,7 +27,7 @@ func TasksByUserIdAndDate(id int64, date time.Time) ([]*Task, error) {
 	tasks := make([]*Task, 0)
 	for rows.Next() {
 		var t Task
-		err := rows.Scan(&t.Id, &t.Priority, &t.Time, &t.Description, &t.Done, &t.Canceled)
+		err := rows.Scan(&t.Id, &t.Priority, &t.EstimatedTime, &t.Description, &t.Done, &t.Canceled)
 		if err != nil {
 			return nil, err
 		}
@@ -36,10 +36,10 @@ func TasksByUserIdAndDate(id int64, date time.Time) ([]*Task, error) {
 	return tasks, nil
 }
 
-func TaskCreate(uid int64, priority string, date time.Time, time time.Duration, description string) (int64, error) {
+func TaskCreate(uid int64, priority string, date time.Time, estimatedTime time.Duration, description string) (int64, error) {
 	result, err := database.SQL.Exec(
-		"INSERT INTO task (user_id, priority, date, time, description) VALUES (?, ?, ?, ?, ?)",
-		uid, priority, date, time, description)
+		"INSERT INTO task (user_id, priority, date, estimated_time, description) VALUES (?, ?, ?, ?, ?)",
+		uid, priority, date, estimatedTime, description)
 	if err != nil {
 		return 0, err
 	}

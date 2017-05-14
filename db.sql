@@ -15,7 +15,7 @@ CREATE TABLE `task` (
   user_id integer(11) NOT NULL,
   description VARCHAR(256) NOT NULL,
   date DATE NOT NULL,
-  time BIGINT,
+  estimated_time BIGINT,
   done tinyint(1) NOT NULL DEFAULT 0,
   canceled tinyint(1) NOT NULL DEFAULT 0,
 

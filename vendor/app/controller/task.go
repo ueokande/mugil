@@ -14,9 +14,9 @@ type TaskIndexJsonForm struct {
 }
 
 type TaskCreateForm struct {
-	Time        time.Duration `form:"time",json:"time"`
-	Priority    string        `form:"priority",json:"priority"`
-	Description string        `form:"description",json:"description"`
+	EstimatedTime time.Duration `form:"time",json:"estimated_time"`
+	Priority      string        `form:"priority",json:"priority"`
+	Description   string        `form:"description",json:"description"`
 }
 
 type IdResponse struct {
@@ -24,12 +24,12 @@ type IdResponse struct {
 }
 
 type TaskDto struct {
-	Id          int64         `json:"id"`
-	Time        time.Duration `json:"time"`
-	Priority    string        `json:"priority"`
-	Description string        `json:"description"`
-	Done        bool          `json:"done"`
-	Canceled    bool          `json:"canceled"`
+	Id            int64         `json:"id"`
+	EstimatedTime time.Duration `json:"estimated_time"`
+	Priority      string        `json:"priority"`
+	Description   string        `json:"description"`
+	Done          bool          `json:"done"`
+	Canceled      bool          `json:"canceled"`
 }
 
 type MessageJsonDto struct {
@@ -72,12 +72,12 @@ func TaskIndexJson(c echo.Context) error {
 	dtos := make([]TaskDto, 0, len(tasks))
 	for _, t := range tasks {
 		dtos = append(dtos, TaskDto{
-			Id:          t.Id,
-			Time:        t.Time,
-			Priority:    t.Priority,
-			Description: t.Description,
-			Done:        t.Done,
-			Canceled:    t.Canceled,
+			Id:            t.Id,
+			EstimatedTime: t.EstimatedTime,
+			Priority:      t.Priority,
+			Description:   t.Description,
+			Done:          t.Done,
+			Canceled:      t.Canceled,
 		})
 	}
 	err = c.JSON(http.StatusOK, dtos)
@@ -101,7 +101,7 @@ func TaskCreate(c echo.Context) error {
 		return err
 	}
 
-	id, err := model.TaskCreate(uid, form.Priority, time.Now(), form.Time, form.Description)
+	id, err := model.TaskCreate(uid, form.Priority, time.Now(), form.EstimatedTime, form.Description)
 	if err != nil {
 		log.Error(err)
 		return err

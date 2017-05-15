@@ -22,8 +22,8 @@ func LoginGet(c echo.Context) error {
 }
 
 type LoginPostForm struct {
-	Email    string `form:"email"`
-	Password string `form:"password"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 func LoginPost(c echo.Context) error {
@@ -48,5 +48,5 @@ func LoginPost(c echo.Context) error {
 	}
 	sess.Set("current_user_id", id)
 
-	return c.Redirect(http.StatusFound, "/")
+	return c.JSON(http.StatusOK, MessageJsonDto{"OK"})
 }

@@ -35,7 +35,7 @@ func LoginPost(c echo.Context) error {
 	}
 	id, err := model.UserAuthenticate(form.Email, form.Password)
 	if err == model.ErrAuthentication {
-		return c.Redirect(http.StatusFound, "/login")
+		return c.JSON(http.StatusForbidden, MessageJsonDto{"authentication error"})
 	} else if err != nil {
 		log.Error(err)
 		return err

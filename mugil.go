@@ -42,7 +42,8 @@ func main() {
 	e.POST("/login", controller.LoginPost)
 
 	e.GET("/", controller.TaskIndex)
-	e.GET("/tasks.json", controller.TaskIndexJson)
-	e.POST("/tasks", controller.TaskCreate)
+
+	e.GET("/tasks", controller.TaskIndexJson)
+	e.POST("/tasks", controller.TaskCreateJson)
 	e.Logger.Fatal(e.Start(":1323"))
 }

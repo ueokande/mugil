@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import CsrfToken from '../ui/csrf-token';
 import PropTypes from 'prop-types';
-
 
 export default class LoginForm extends Component {
   handleLogin() {

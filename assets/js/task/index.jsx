@@ -56,7 +56,6 @@ export default class TaskIndex extends Component {
   }
 
   handleCreate(priority, estimatedTime, description) {
-    let token = getCsrfToken();
     fetch('/tasks', {
       method: 'POST',
       credentials: 'same-origin',
@@ -71,7 +70,7 @@ export default class TaskIndex extends Component {
       })
     })
     .then(checkStatus)
-    .then((json) => {
+    .then(() => {
       this.setState({
         formOpen: false,
       })

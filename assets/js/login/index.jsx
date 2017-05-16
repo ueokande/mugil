@@ -31,7 +31,7 @@ class Login extends Component {
     .then((response) => {
       return response.json()
     })
-    .then((entries) => {
+    .then(() => {
       window.location.href = "/"
     });
   }

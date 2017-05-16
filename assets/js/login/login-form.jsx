@@ -32,7 +32,7 @@ export default class LoginForm extends Component {
 
         <RaisedButton
           label="Login"
-          onTouchTap={(e) => { this.handleLogin() }}
+          onTouchTap={() => { this.handleLogin() }}
           primary={true}
           fullWidth={true}
         />

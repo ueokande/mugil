@@ -31,7 +31,7 @@ export default class TaskIndex extends Component {
   constructor() {
     super();
     this.state = {
-      formOpen: true,
+      formOpen: false,
       entries: []
     };
   }
@@ -77,6 +77,12 @@ export default class TaskIndex extends Component {
     })
   }
 
+  handleNewFormOpen() {
+    this.setState({
+      formOpen: true
+    })
+  }
+
   handleCancel() {
     this.setState({
       formOpen: false
@@ -88,7 +94,10 @@ export default class TaskIndex extends Component {
       <div>
         <h1></h1>
         <EntryList entries={this.state.entries}></EntryList>
-        <FloatingActionButton style={floatingActionButtonStyle}>
+        <FloatingActionButton
+          style={floatingActionButtonStyle}
+          onTouchTap={() => this.handleNewFormOpen()}
+        >
           <ContentAdd />
         </FloatingActionButton>
         <TaskFormDialog

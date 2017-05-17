@@ -1,35 +1,49 @@
-import React from 'react';
+import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import CsrfToken from '../ui/csrf-token';
+import PropTypes from 'prop-types';
 
-const LoginForm = () => (
-  <form className='login-form' action="/login" method="POST">
+export default class LoginForm extends Component {
+  handleLogin() {
+    let email = this.email.getValue()
+    let password = this.password.getValue()
+    this.props.login(email, password)
+  }
 
-    <CsrfToken />
+  render() {
+    return (
+      <div className='login-form'>
+        <TextField
+          ref={(e) => { this.email = e }}
+          hintText="Email"
+          floatingLabelText="Email"
+          name="email"
+          fullWidth={true}
+        /><br />
 
-    <TextField
-      hintText="Email"
-      floatingLabelText="Email"
-      name="email"
-      fullWidth={true}
-    /><br />
+        <TextField
+          ref={(e) => { this.password = e }}
+          hintText="Password Field"
+          floatingLabelText="Password"
+          type="password"
+          name="password"
+          fullWidth={true}
+        /><br />
 
-    <TextField
-      hintText="Password Field"
-      floatingLabelText="Password"
-      type="password"
-      name="password"
-      fullWidth={true}
-    /><br />
+        <RaisedButton
+          label="Login"
+          onTouchTap={() => { this.handleLogin() }}
+          primary={true}
+          fullWidth={true}
+        />
+      </div>
+    )
+  }
+}
 
-    <RaisedButton
-      type="submit"
-      label="Login"
-      primary={true}
-      fullWidth={true}
-    />
-  </form>
-);
+LoginForm.defaultProps = {
+};
 
-export default LoginForm;
+LoginForm.propTypes = {
+  login: PropTypes.func.isRequired,
+}

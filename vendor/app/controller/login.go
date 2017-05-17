@@ -22,8 +22,8 @@ func LoginGet(c echo.Context) error {
 }
 
 type LoginPostForm struct {
-	Email    string `form:"email"`
-	Password string `form:"password"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 func LoginPost(c echo.Context) error {
@@ -35,7 +35,7 @@ func LoginPost(c echo.Context) error {
 	}
 	id, err := model.UserAuthenticate(form.Email, form.Password)
 	if err == model.ErrAuthentication {
-		return c.Redirect(http.StatusFound, "/login")
+		return c.JSON(http.StatusForbidden, MessageJsonDto{"authentication error"})
 	} else if err != nil {
 		log.Error(err)
 		return err
@@ -48,5 +48,5 @@ func LoginPost(c echo.Context) error {
 	}
 	sess.Set("current_user_id", id)
 
-	return c.Redirect(http.StatusFound, "/")
+	return c.JSON(http.StatusOK, MessageJsonDto{"OK"})
 }

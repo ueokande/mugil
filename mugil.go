@@ -21,9 +21,7 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
-	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
-		TokenLookup: "form:CSRF_TOKEN",
-	}))
+	e.Use(middleware.CSRF())
 
 	db, err := database.LoadConfig("config/development.json")
 	if err != nil {
@@ -44,7 +42,8 @@ func main() {
 	e.POST("/login", controller.LoginPost)
 
 	e.GET("/", controller.TaskIndex)
-	e.GET("/tasks.json", controller.TaskIndexJson)
-	e.POST("/tasks", controller.TaskCreate)
+
+	e.GET("/tasks", controller.TaskIndexJson)
+	e.POST("/tasks", controller.TaskCreateJson)
 	e.Logger.Fatal(e.Start(":1323"))
 }

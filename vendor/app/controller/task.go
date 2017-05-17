@@ -14,9 +14,9 @@ type TaskIndexJsonForm struct {
 }
 
 type TaskCreateForm struct {
-	EstimatedTime time.Duration `form:"time",json:"estimated_time"`
-	Priority      string        `form:"priority",json:"priority"`
-	Description   string        `form:"description",json:"description"`
+	EstimatedTime time.Duration `json:"estimated_time"`
+	Priority      string        `json:"priority"`
+	Description   string        `json:"description"`
 }
 
 type IdResponse struct {
@@ -80,15 +80,10 @@ func TaskIndexJson(c echo.Context) error {
 			Canceled:      t.Canceled,
 		})
 	}
-	err = c.JSON(http.StatusOK, dtos)
-	if err != nil {
-		log.Error(err)
-		return c.JSON(http.StatusInternalServerError, MessageJsonDto{"marshal error"})
-	}
-	return nil
+	return c.JSON(http.StatusOK, dtos)
 }
 
-func TaskCreate(c echo.Context) error {
+func TaskCreateJson(c echo.Context) error {
 	uid, err := CurrentUserId(c)
 	if err != nil {
 		return c.Redirect(http.StatusFound, "/login")

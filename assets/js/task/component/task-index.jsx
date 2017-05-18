@@ -3,9 +3,12 @@ import AppBar from 'material-ui/AppBar';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { connect } from 'react-redux'
 
 import TaskFormDialog from './task-form-dialog';
 import EntryList from './entry-list';
+
+import * as form from '../action/form'
 
 import { getCsrfToken } from '../../shared/csrf'
 
@@ -28,11 +31,10 @@ function checkStatus(response) {
   }
 }
 
-export default class TaskIndex extends Component {
+class TaskIndex extends Component {
   constructor() {
     super();
     this.state = {
-      formOpen: false,
       entries: []
     };
   }
@@ -72,22 +74,16 @@ export default class TaskIndex extends Component {
     })
     .then(checkStatus)
     .then(() => {
-      this.setState({
-        formOpen: false,
-      })
+      this.props.dispatch(form.close());
     })
   }
 
   handleNewFormOpen() {
-    this.setState({
-      formOpen: true
-    })
+    this.props.dispatch(form.openNew());
   }
 
   handleCancel() {
-    this.setState({
-      formOpen: false
-    })
+    this.props.dispatch(form.close());
   }
 
   render() {
@@ -106,7 +102,7 @@ export default class TaskIndex extends Component {
             <ContentAdd />
           </FloatingActionButton>
           <TaskFormDialog
-            open={this.state.formOpen}
+            open={this.props.formOpen}
             priority="B"
             estimatedTime={30 * 60 * 1e9}
             create={(p, e, d) => this.handleCreate(p, e, d)}
@@ -118,3 +114,9 @@ export default class TaskIndex extends Component {
   }
 }
 
+export default connect((state) => {
+  const { form } = state;
+  return {
+    formOpen: form.open
+  }
+})(TaskIndex)

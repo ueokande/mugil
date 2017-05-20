@@ -13,8 +13,6 @@ import EntryList from './entry-list';
 import * as form from '../action/form'
 import * as tasks from '../action/tasks'
 
-import { getCsrfToken } from '../../shared/csrf'
-
 const floatingActionButtonStyle = {
   margin: 0,
   top: 'auto',
@@ -24,57 +22,19 @@ const floatingActionButtonStyle = {
   position: 'fixed',
 };
 
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response
-  } else {
-    var error = new Error(response.statusText)
-    error.response = response
-    throw error
-  }
-}
-
 class TaskIndex extends Component {
   constructor() {
     super();
   }
 
   componentDidMount() {
-    this.props.dispatch(tasks.fetch());
-    fetch('/tasks?date=2017-05-16', {
-      method: 'GET',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(checkStatus)
-    .then((response) => {
-      return response.json()
-    })
-    .then((entries) => {
-      this.props.dispatch(tasks.update(entries));
-    });
+    this.props.dispatch(tasks.fetchTasks('2017-05-16'));
   }
 
   handleCreate(priority, estimatedTime, description) {
-    fetch('/tasks', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': getCsrfToken()
-      },
-      body: JSON.stringify({
-        priority: priority,
-        estimated_time: estimatedTime,
-        description: description
-      })
-    })
-    .then(checkStatus)
-    .then(() => {
+    this.props.dispatch(tasks.postTask(priority, estimatedTime, description, () => {
       this.props.dispatch(form.close());
-    })
+    }));
   }
 
   handleNewFormOpen() {

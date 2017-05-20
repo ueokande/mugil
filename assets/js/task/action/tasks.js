@@ -52,11 +52,21 @@ export function postTask(priority, estimatedTime, description, successed) {
       })
     })
     .then(checkStatus)
-    .then(() => {
+    .then((response) => {
+      return response.json()
+    })
+    .then((task) => {
       if (typeof successed !== 'undefined') {
-        successed();
+        successed(task);
       }
     })
+  };
+}
+
+export function addTask(task) {
+  return {
+    type: "TASKS_ADD",
+    task: task
   };
 }
 

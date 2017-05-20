@@ -5,6 +5,10 @@ const initialState = {
 
 export default function tasks(state = initialState, action) {
   switch (action.type) {
+    case "TASKS_ADD":
+      return Object.assign({}, state, {
+        entries: state.entries.concat(action.task)
+      });
     case "TASKS_FETCH":
       return Object.assign({}, state, {
         loading: true

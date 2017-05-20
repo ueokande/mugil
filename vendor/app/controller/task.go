@@ -19,10 +19,6 @@ type TaskCreateForm struct {
 	Description   string        `json:"description"`
 }
 
-type IdResponse struct {
-	Id int64 `json:"id"`
-}
-
 type TaskDto struct {
 	Id            int64         `json:"id"`
 	EstimatedTime time.Duration `json:"estimated_time"`
@@ -101,5 +97,10 @@ func TaskCreateJson(c echo.Context) error {
 		log.Error(err)
 		return err
 	}
-	return c.JSON(http.StatusOK, IdResponse{Id: id})
+	return c.JSON(http.StatusOK, TaskDto{
+		Id:            id,
+		EstimatedTime: form.EstimatedTime,
+		Priority:      form.Priority,
+		Description:   form.Description,
+	})
 }

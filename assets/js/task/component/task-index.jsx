@@ -33,8 +33,9 @@ class TaskIndex extends Component {
   }
 
   handleCreate(priority, estimatedTime, description) {
-    this.props.dispatch(tasks.postTask(priority, estimatedTime, description, () => {
+    this.props.dispatch(tasks.postTask(priority, estimatedTime, description, (task) => {
       this.props.dispatch(form.close());
+      this.props.dispatch(tasks.addTask(task));
     }));
   }
 

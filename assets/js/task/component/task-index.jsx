@@ -28,7 +28,8 @@ class TaskIndex extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(tasks.fetchTasks('2017-05-16'));
+    let date = new Date().toISOString().split('T')[0]
+    this.props.dispatch(tasks.fetchTasks(date));
   }
 
   handleCreate(priority, estimatedTime, description) {

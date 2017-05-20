@@ -4,7 +4,8 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import LinearProgress from 'material-ui/LinearProgress';
 
 import TaskFormDialog from './task-form-dialog';
 import EntryList from './entry-list';
@@ -39,6 +40,7 @@ class TaskIndex extends Component {
   }
 
   componentDidMount() {
+    this.props.dispatch(tasks.fetch());
     fetch('/tasks?date=2017-05-16', {
       method: 'GET',
       credentials: 'same-origin',
@@ -91,6 +93,9 @@ class TaskIndex extends Component {
             title="Mugil tasks"
             iconClassNameRight="muidocs-icon-navigation-expand-more"
           />
+          <LinearProgress color="#E91E63" style={{
+            display: this.props.loading ? "block" : "none"
+          }}/>
           <EntryList entries={this.props.entries}></EntryList>
           <FloatingActionButton
             style={floatingActionButtonStyle}
@@ -119,6 +124,7 @@ EntryList.propTypes = {
 export default connect(({form, tasks}) => {
   return {
     formOpen: form.open,
-    entries: tasks.entries
+    entries: tasks.entries,
+    loading: tasks.loading,
   }
 })(TaskIndex)

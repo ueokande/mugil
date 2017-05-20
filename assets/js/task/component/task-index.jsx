@@ -3,12 +3,14 @@ import AppBar from 'material-ui/AppBar';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 
 import TaskFormDialog from './task-form-dialog';
 import EntryList from './entry-list';
 
 import * as form from '../action/form'
+import * as tasks from '../action/tasks'
 
 import { getCsrfToken } from '../../shared/csrf'
 
@@ -34,9 +36,6 @@ function checkStatus(response) {
 class TaskIndex extends Component {
   constructor() {
     super();
-    this.state = {
-      entries: []
-    };
   }
 
   componentDidMount() {
@@ -52,9 +51,7 @@ class TaskIndex extends Component {
       return response.json()
     })
     .then((entries) => {
-      this.setState({
-        entries: entries
-      })
+      this.props.dispatch(tasks.update(entries));
     });
   }
 
@@ -94,7 +91,7 @@ class TaskIndex extends Component {
             title="Mugil tasks"
             iconClassNameRight="muidocs-icon-navigation-expand-more"
           />
-          <EntryList entries={this.state.entries}></EntryList>
+          <EntryList entries={this.props.entries}></EntryList>
           <FloatingActionButton
             style={floatingActionButtonStyle}
             onTouchTap={() => this.handleNewFormOpen()}
@@ -114,9 +111,14 @@ class TaskIndex extends Component {
   }
 }
 
-export default connect((state) => {
-  const { form } = state;
+EntryList.propTypes = {
+  formOpen: PropTypes.bool,
+  entries: PropTypes.arrayOf(PropTypes.object)
+};
+
+export default connect(({form, tasks}) => {
   return {
-    formOpen: form.open
+    formOpen: form.open,
+    entries: tasks.entries
   }
 })(TaskIndex)
